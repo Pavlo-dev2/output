@@ -23,18 +23,36 @@ int* setsize(long hight, long wigth, char type);
 
 long* retblockinfo();
 //returns block info;
-//[0] - x - number of blocks
-//[1] - y - number of blocks
-//[2] - block - hight
-//[3] - block - wigth
+//[0] - x - number of blocks;
+//[1] - y - number of blocks;
+//[2] - block - hight;
+//[3] - block - wigth;
+
+int definefeld(long wigth, long hight, char x_pos, char y_pos);
+//creates feld;
+//height - number of blocks;
+//wigth - number of blocks;
+//x_pos - l/m/r(left, midle, right);
+//y_pos - u/m/d(up, midle, down);
+
+long* retfeldinfo();
+//returns feld info;
+//[0] - x - feld wigth in blocks;
+//[1] - y - feld hight in  blocks;
+//[2] - feld x start posision in pixel;
+//[3] - feld y start posision in pyxel;
 
 //info
 static struct fb_fix_screeninfo finfo;
 static struct fb_var_screeninfo vinfo;
 static long screen_hight;//screen hight in blocks
 static long screen_wigth;//screen wigth in blocks
-static long block_hight;
-static long block_wigth;
+static long block_hight;//block height in pixels
+static long block_wigth;//block wight in pixels
+static long feld_hight;//feld height in blocks
+static long feld_wigth;//feld wigth in blocks
+static long feld_x_start;//feld x start posison in pixel
+static long feld_y_start;//feld y start posison in pixel
 
 int retfdfb0()
 {
@@ -88,6 +106,62 @@ long* retblockinfo()
 	info[1] = screen_hight;
 	info[2] = block_wigth;
 	info[3] = block_hight;
+	
+	return info;
+}
+
+int definefeld(long wigth, long hight, char x_pos, char y_pos)
+{
+	if (hight <= screen_hight && wigth <= screen_wigth)
+	{
+		feld_hight = hight;
+		feld_wigth = wigth;
+	}
+	else
+	{
+		return 1;
+	}
+	
+	switch (x_pos)
+	{
+		case 'l':
+			feld_x_start = 0;
+			break;
+		case 'r':
+			feld_x_start = screen_wigth - 1 - wigth;
+			break;
+		case 'm':
+			feld_x_start = (screen_wigth - 1 - wigth)/2;
+			break;
+	}
+	switch (y_pos)
+	{
+		case 'u':
+			feld_y_start = 0;
+			break;
+		case 'd':
+			feld_y_start = screen_hight - 1 - hight;
+			break;
+		case 'm':
+			feld_y_start = (screen_hight - 1 - hight)/2;
+			break;
+	}
+	
+	feld_x_start *= block_wigth;
+	feld_y_start *= block_hight;
+
+	return 0;
+
+}
+
+long* retfeldinfo()
+{
+	long *info = calloc(4, sizeof(long));
+	
+	info[0] = feld_wigth;
+	info[1] = feld_hight;
+	info[2] = feld_x_start;
+	info[3] = feld_y_start;
 	
 	return info;
 }

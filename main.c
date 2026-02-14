@@ -14,6 +14,10 @@ int main()
 	long *blockinfo = retblockinfo();
 	printf("Xnum: %ld\nYnum: %ld\nXwigth: %ld\nYhight: %ld\n", blockinfo[0], blockinfo[1], blockinfo[2], blockinfo[3]);
 
+	definefeld(1, 1, 'l', 'd');
+	long *feldinfo = retfeldinfo();
+	printf("Feld_W: %ld\nFeld_H: %ld\nXS: %ld\nYS: %ld\n", feldinfo[0], feldinfo[1], feldinfo[2], feldinfo[3]);
+	
 	free(screensize);
 	free(blockinfo);
 	return 0;

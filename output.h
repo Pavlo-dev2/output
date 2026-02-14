@@ -22,6 +22,19 @@ long* retblockinfo();
 //[2] - block - hight
 //[3] - block - wigth
 
+int definefeld(long wigth, long hight, char x_pos, char y_pos);
+//creates feld;
+//height - number of blocks;
+//wigth - number of blocks;
+//x_pos - l/m/r(left, midle, right);
+//y_pos - u/m/d(up, midle, down);
+
+long* retfeldinfo();
+//returns feld info;
+//[0] - x - feld wigth in blocks;
+//[1] - y - feld hight in  blocks;
+//[2] - feld x start posision in pixel;
+//[3] - feld y start posision in pyxel;
 
 /*
 int retfdfb0();
