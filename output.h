@@ -1,5 +1,6 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
+#include <stdint.h>
 
 int retfdfb0();
 //returns file deckriptor fb0;
@@ -35,6 +36,14 @@ long* retfeldinfo();
 //[1] - y - feld hight in  blocks;
 //[2] - feld x start posision in pixel;
 //[3] - feld y start posision in pyxel;
+//[4] - feld x end posision in pixel;
+//[5] - feld y end posision in pyxel;
+
+uint8_t *retfbp(int fb0);
+//return pointer;
+
+int closefbp(uint8_t *fbp);
+//close fb0 pointer;
 
 /*
 int retfdfb0();

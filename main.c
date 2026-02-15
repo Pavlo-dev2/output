@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "output.h"
 #include <stdlib.h>
+#include <stdint.h>
 
 int main()
 {
@@ -14,11 +15,16 @@ int main()
 	long *blockinfo = retblockinfo();
 	printf("Xnum: %ld\nYnum: %ld\nXwigth: %ld\nYhight: %ld\n", blockinfo[0], blockinfo[1], blockinfo[2], blockinfo[3]);
 
-	definefeld(1, 1, 'l', 'd');
+	definefeld(3, 3, 'm', 'm');
 	long *feldinfo = retfeldinfo();
-	printf("Feld_W: %ld\nFeld_H: %ld\nXS: %ld\nYS: %ld\n", feldinfo[0], feldinfo[1], feldinfo[2], feldinfo[3]);
+	printf("Feld_W: %ld\nFeld_H: %ld\nXS: %ld\nYS: %ld\nXE: %ld\nYE: %ld\n", feldinfo[0], feldinfo[1], feldinfo[2], feldinfo[3], feldinfo[4], feldinfo[5]);
 	
+	uint8_t *fbp = retfbp(fb0);
+	printf("FBP: %p\n", fbp);
+	closefbp(fbp);
+
 	free(screensize);
 	free(blockinfo);
+	free(feldinfo);
 	return 0;
 }

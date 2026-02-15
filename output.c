@@ -41,6 +41,19 @@ long* retfeldinfo();
 //[1] - y - feld hight in  blocks;
 //[2] - feld x start posision in pixel;
 //[3] - feld y start posision in pyxel;
+//[4] - feld x end posision in pixel;
+//[5] - feld y end posision in pyxel;
+
+uint8_t *retfbp(int fb0);
+//return fb0 pointer;
+
+int closefbp(uint8_t *fbp);
+//close fb0 pointer;
+
+int drawblock(long x, long y);
+//draws block on cord x:y;
+//if x or y == -1, draw the whole line;
+//if x == -1 and y == -1 draws the whole feld;
 
 //info
 static struct fb_fix_screeninfo finfo;
@@ -52,7 +65,9 @@ static long block_wigth;//block wight in pixels
 static long feld_hight;//feld height in blocks
 static long feld_wigth;//feld wigth in blocks
 static long feld_x_start;//feld x start posison in pixel
+static long feld_x_end;//feld x start posison in pixel
 static long feld_y_start;//feld y start posison in pixel
+static long feld_y_end;//feld y start posison in pixel
 
 int retfdfb0()
 {
@@ -126,29 +141,37 @@ int definefeld(long wigth, long hight, char x_pos, char y_pos)
 	{
 		case 'l':
 			feld_x_start = 0;
+			feld_x_end = feld_x_start + wigth;
 			break;
 		case 'r':
 			feld_x_start = screen_wigth - 1 - wigth;
+			feld_x_end = feld_x_start + wigth;
 			break;
 		case 'm':
 			feld_x_start = (screen_wigth - 1 - wigth)/2;
+			feld_x_end = feld_x_start + wigth;
 			break;
 	}
 	switch (y_pos)
 	{
 		case 'u':
 			feld_y_start = 0;
+			feld_y_end = feld_y_start + hight;
 			break;
 		case 'd':
 			feld_y_start = screen_hight - 1 - hight;
+			feld_y_end = feld_y_start + hight;
 			break;
 		case 'm':
 			feld_y_start = (screen_hight - 1 - hight)/2;
+			feld_y_end = feld_y_start + hight;
 			break;
 	}
 	
 	feld_x_start *= block_wigth;
 	feld_y_start *= block_hight;
+	feld_x_end *= block_wigth;
+	feld_y_end *= block_hight;
 
 	return 0;
 
@@ -156,16 +179,56 @@ int definefeld(long wigth, long hight, char x_pos, char y_pos)
 
 long* retfeldinfo()
 {
-	long *info = calloc(4, sizeof(long));
+	long *info = calloc(6, sizeof(long));
 	
 	info[0] = feld_wigth;
 	info[1] = feld_hight;
 	info[2] = feld_x_start;
 	info[3] = feld_y_start;
+	info[4] = feld_x_end;
+	info[5] = feld_y_end;
 	
 	return info;
 }
 
+uint8_t *retfbp(int fb0)
+{
+	uint8_t *fbp = (uint8_t*)mmap(0, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb0, 0);
+	if (fbp == MAP_FAILED)
+	{
+		perror("Mmap failed");
+		close(fb0);
+		return NULL;
+	}
+	return fbp;
+}
+
+int closefbp(uint8_t *fbp)
+{
+	munmap(fbp, finfo.smem_len);
+}
+int drawblock(long x, long y)
+{
+	long ys = feld_y_start + height;
+	long ye = ys + 
+	for (long ay = feld_y_start + y*wigth; ay < yed; ay++)
+	{
+		for (long ax = xst; ax < xed; ax++)
+		{
+            		long location = (ax + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (ay + vinfo.yoffset) * finfo.line_length;
+			
+			if (vinfo.bits_per_pixel == 32)
+			{
+				fbp[location] = b;
+				fbp[location+1] = g;
+				fbp[location+2] = r;
+				fbp[location+3] = 0;
+			}
+		
+		}
+	}
+
+}
 
 /*
 int drawrect(unsigned char r, unsigned char g, unsigned char b, char x, char y, int un, int fb0);
