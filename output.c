@@ -50,7 +50,7 @@ uint8_t *retfbp(int fb0);
 int closefbp(uint8_t *fbp);
 //close fb0 pointer;
 
-int drawblock(long x, long y);
+int drawblock(uint8_t *fbp, long x, long y, int r, int g, int b);
 //draws block on cord x:y;
 //if x or y == -1, draw the whole line;
 //if x == -1 and y == -1 draws the whole feld;
@@ -207,22 +207,24 @@ int closefbp(uint8_t *fbp)
 {
 	munmap(fbp, finfo.smem_len);
 }
-int drawblock(long x, long y)
+int drawblock(uint8_t *fdp, long x, long y, int r, int g, int b)
 {
-	long ys = feld_y_start + height;
-	long ye = ys + 
-	for (long ay = feld_y_start + y*wigth; ay < yed; ay++)
+	long ys = feld_y_start + block_hight*y;
+	long ye = ys + block_hight;
+	long xs = feld_x_start + block_wigth*x;
+	long xe = xs + block_wigth;
+	for (long ay = ys; ay < ye; ay++)
 	{
-		for (long ax = xst; ax < xed; ax++)
+		for (long ax = xs; ax < xe; ax++)
 		{
             		long location = (ax + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (ay + vinfo.yoffset) * finfo.line_length;
 			
 			if (vinfo.bits_per_pixel == 32)
 			{
-				fbp[location] = b;
-				fbp[location+1] = g;
-				fbp[location+2] = r;
-				fbp[location+3] = 0;
+				fdp[location] = b;
+				fdp[location+1] = g;
+				fdp[location+2] = r;
+				fdp[location+3] = 0;
 			}
 		
 		}
