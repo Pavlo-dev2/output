@@ -167,11 +167,28 @@ int definefeld(long wigth, long hight, char x_pos, char y_pos)
 			feld_y_end = feld_y_start + hight;
 			break;
 	}
+
+	if (hight%2 == 0)
+	{	
+		feld_y_start = feld_y_start * block_hight; 0.5*block_hight;
+		feld_y_end = feld_y_end * block_hight; 0.5*block_hight;
+	}
+	else if (hight%2 == 1)
+	{
+		feld_y_start = feld_y_start * block_hight + 0.5*block_hight;
+		feld_y_end = feld_y_end * block_hight + 0.5*block_hight;
+	}
 	
-	feld_x_start *= block_wigth;
-	feld_y_start *= block_hight;
-	feld_x_end *= block_wigth;
-	feld_y_end *= block_hight;
+	if (wigth%2 == 0)
+	{	
+		feld_x_start = feld_x_start * block_wigth; 0.5*block_wigth;
+		feld_x_end = feld_x_end * block_wigth; 0.5*block_wigth;
+	}
+	else if (wigth%2 == 1)
+	{
+		feld_x_start = feld_x_start * block_wigth + 0.5*block_wigth;
+		feld_x_end = feld_x_end * block_wigth + 0.5*block_wigth;
+	}
 
 	return 0;
 
@@ -207,12 +224,32 @@ int closefbp(uint8_t *fbp)
 {
 	munmap(fbp, finfo.smem_len);
 }
+
 int drawblock(uint8_t *fdp, long x, long y, int r, int g, int b)
 {
-	long ys = feld_y_start + block_hight*y;
-	long ye = ys + block_hight;
-	long xs = feld_x_start + block_wigth*x;
-	long xe = xs + block_wigth;
+	long xs, xe, ys, ye;
+
+	if (y != -1)
+	{
+		ys = feld_y_start + block_hight*y;
+		ye = ys + block_hight;
+	}
+	else
+	{	
+		ys = feld_y_start;
+		ye = feld_y_end;
+	}
+	if (x != -1)
+	{
+		xs = feld_x_start + block_wigth*x;
+		xe = xs + block_wigth;
+	}
+	else
+	{	
+		xs = feld_x_start;
+		xe = feld_x_end;
+	}
+
 	for (long ay = ys; ay < ye; ay++)
 	{
 		for (long ax = xs; ax < xe; ax++)
