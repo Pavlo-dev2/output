@@ -11,10 +11,11 @@ int getinfos(int fbo);
 long* retscreensize();
 //returns screen size in pixels([x, y, fbolength]);
 
-int* setsize(long hight, long wigth, char type, char f_type);
+int setsize(long hight, long wigth, char type);
 //set screen size;
 //type 0 - hight*wight;
 //type 1 - all block have same hight and wigth, higth depandse on how much elements with this wigth will fit on the screen; 
+//type 2 - all block have same hight and wigth, wigth depandse on how much elements with this height will fit on the screen; 
 
 long* retblockinfo();
 //returns block info;

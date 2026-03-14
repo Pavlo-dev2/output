@@ -16,10 +16,11 @@ int getinfos(int fbo);
 long* retscreensize();
 //returns screen size in pixels([x, y, fbolength]);
 
-int* setsize(long hight, long wigth, char type);
+int setsize(long hight, long wigth, char type);
 //set screen size;
 //type 0 - hight*wight;
 //type 1 - all block have same hight and wigth, higth depandse on how much elements with this wigth will fit on the screen; 
+//type 2 - all block have same hight and wigth, wigth depandse on how much elements with this height will fit on the screen; 
 
 long* retblockinfo();
 //returns block info;
@@ -91,7 +92,7 @@ long *retscreensize()
 	return info;
 }
 
-int* setsize(long hight, long wigth, char type)
+int setsize(long hight, long wigth, char type)
 {
 	if (type == 0)
 	{
@@ -100,15 +101,24 @@ int* setsize(long hight, long wigth, char type)
 		block_hight = vinfo.yres/screen_hight;
 		block_wigth = vinfo.xres/screen_wigth;
 	}
+
 	else if (type == 1)
 	{
 		screen_wigth = screen_hight = hight;
 		block_wigth = block_hight = vinfo.xres/screen_wigth;
 		screen_hight = vinfo.yres/block_wigth;
 	}
+	
+	else if (type == 2)
+	{
+		screen_hight = screen_wigth = wigth;
+		block_hight = block_wigth = vinfo.yres/screen_hight;
+		screen_wigth = vinfo.xres/block_hight;
+	}
+
 	else
 	{
-		return NULL;
+		return 0;
 	}
 	return 0;
 }
