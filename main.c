@@ -11,11 +11,11 @@ int main()
 	long *screensize = retscreensize();
 	printf("FB0: %d\nx: %ld\ny: %ld\nlen: %ld\n", fb0, screensize[0], screensize[1], screensize[2]);
 	
-	setsize(16, 16, 1);
+	setsize(8, 8, 2);
 	long *blockinfo = retblockinfo();
 	printf("Xnum: %ld\nYnum: %ld\nXwigth: %ld\nYhight: %ld\n", blockinfo[0], blockinfo[1], blockinfo[2], blockinfo[3]);
 
-	definefeld(10, 10, 'm', 'm');
+	definefeld(6, 6, 'r', 'm');
 	long *feldinfo = retfeldinfo();
 	printf("Feld_W: %ld\nFeld_H: %ld\nXS: %ld\nYS: %ld\nXE: %ld\nYE: %ld\n", feldinfo[0], feldinfo[1], feldinfo[2], feldinfo[3], feldinfo[4], feldinfo[5]);
 	
@@ -23,9 +23,11 @@ int main()
 	printf("FBP: %p\n", fbp);
 
 	drawblock(fbp, -1, -1, 0, 128, 0);
-	drawblock(fbp, 15, 0, 128, 0, 0);
-	//drawblock(fbp, 0, -1, 128, 0, 0);
-	//drawblock(fbp, 15, 9, 128, 0, 0);
+	drawblock(fbp, 5, 5, 128, 0, 0);
+	drawblock(fbp, 0, 5, 128, 0, 0);
+	drawblock(fbp, 5, 0, 128, 0, 0);
+	drawblock(fbp, 0, 0, 128, 0, 0);
+	drawblock(fbp, 3, -1, 128, 0, 0);
 
 	closefbp(fbp);
 
